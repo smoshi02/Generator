@@ -1,0 +1,47 @@
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Categories;
+DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS OrderItems;
+
+
+-- USERS
+CREATE TABLE Users (
+    UserID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Age INT,
+    City VARCHAR(100) NOT NULL
+);
+
+-- CATEGORIES
+CREATE TABLE Categories (
+    CategoryID SERIAL PRIMARY KEY,
+    CategoryName VARCHAR(100) NOT NULL
+);
+
+-- PRODUCTS
+CREATE TABLE Products (
+    ProductID SERIAL PRIMARY KEY,
+    CategoryID INT NOT NULL,
+    ProductName VARCHAR(100) NOT NULL,
+    Price NUMERIC(10,2) NOT NULL,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
+-- ORDERS
+CREATE TABLE Orders (
+    OrderID SERIAL PRIMARY KEY,
+    UserID INT NOT NULL,
+    OrderDate DATE NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
+
+-- ORDER ITEMS
+CREATE TABLE OrderItems (
+    ItemID SERIAL PRIMARY KEY,
+    OrderID INT NOT NULL,
+    ProductID INT NOT NULL,
+    Quantity INT NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
